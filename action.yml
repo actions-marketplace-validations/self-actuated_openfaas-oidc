@@ -30,3 +30,7 @@ runs:
           token: $JWT
 
         EOF
+        
+        chmod 0700 .openfaas
+        chmod 0700 .openfaas/config.yml
+        
