@@ -1,0 +1,31 @@
+# Copyright (c) 2022 OpenFaaS Ltd
+name: 'openfaas-oidc'
+description: 'Log into the OpenFaaS OIDC proxy for actuated using GitHub Actions.'
+branding:
+  icon: 'arrow-right-circle'
+  color: 'gray-dark'
+inputs:
+  gateway:
+    description: 'URL for the OpenFaaS gateway.'
+    required: true
+    default: ""
+
+runs:
+    using: 'composite'
+    steps:
+    - name: Update faas-cli auth
+      env:
+        GATEWAY: ${{ inputs.gateway }}
+      shell: bash
+      id: setup-config
+
+      run: |
+        OIDC_TOKEN=$(curl -sLS "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=$GATEWAY" -H "User-Agent: actions/oidc-client" -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN")
+        JWT=$(echo $OIDC_TOKEN | jq -j '.value'|base64)
+        mkdir -p ~/.openfaas
+        cat > ~/.openfaas/config.yml <<EOF
+        auths:
+        - gateway: $GATEWAY
+          auth: token
+          token: $JWT
+        EOF
