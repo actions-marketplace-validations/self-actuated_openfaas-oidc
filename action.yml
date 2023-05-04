@@ -23,14 +23,19 @@ runs:
         OIDC_TOKEN=$(curl -sLS "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=$GATEWAY" -H "User-Agent: actions/oidc-client" -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN")
         JWT=$(echo $OIDC_TOKEN | jq -j '.value')
         mkdir -p ~/.openfaas
-        cat > ~/.openfaas/config.yml <<EOF
-        auths:
-        - gateway: $GATEWAY
-          auth: oauth2
-          token: $JWT
-
-        EOF
+        echo "auths: "> ~/.openfaas/config.yml
+        echo "- gateway: $GATEWAY" >> ~/.openfaas/config.yml
+        echo "  auth: oauth2" >> ~/.openfaas/config.yml
+        echo "  token: $JWT" >> ~/.openfaas/config.yml
         
         chmod 0700 ~/.openfaas
         chmod 0700 ~/.openfaas/config.yml
         
+
+        # cat > ~/.openfaas/config.yml <<EOF
+        # auths:
+        # - gateway: $GATEWAY
+        #   auth: oauth2
+        #   token: $JWT
+
+        # EOF
