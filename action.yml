@@ -31,6 +31,6 @@ runs:
 
         EOF
         
-        chmod 0700 .openfaas
-        chmod 0700 .openfaas/config.yml
+        chmod 0700 ~/.openfaas
+        chmod 0700 ~/.openfaas/config.yml
         
