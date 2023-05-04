@@ -26,6 +26,6 @@ runs:
         cat > ~/.openfaas/config.yml <<EOF
         auths:
         - gateway: $GATEWAY
-          auth: token
+          auth: oauth2
           token: $JWT
         EOF
