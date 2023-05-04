@@ -28,4 +28,5 @@ runs:
         - gateway: $GATEWAY
           auth: oauth2
           token: $JWT
+
         EOF
